@@ -1,0 +1,9 @@
+config/*
+!config/.gitkeep
+backups/*
+!backups/.gitkeep
+logs/*
+!logs/.gitkeep
+tmp/*
+!tmp/.gitkeep
+assets/generated/*
