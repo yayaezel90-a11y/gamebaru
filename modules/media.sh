@@ -1,0 +1,8 @@
+#!/data/data/com.termux/files/usr/bin/bash
+download_manager(){ header; record_usage "Download Manager"; local url dir; url=$(ask "URL"); dir=$(ask "Folder tujuan" "${DOWNLOAD_DIR:-$HOME/storage/downloads}"); mkdir -p "$dir"; wget -c -P "$dir" "$url" || curl -L -O --output-dir "$dir" "$url"; pause; }
+youtube_downloader(){ header; record_usage "YouTube Downloader"; need yt-dlp || { echo "Coba: python -m pip install yt-dlp"; pause; return; }; local url dir; url=$(ask "URL YouTube"); dir=$(ask "Folder tujuan" "${DOWNLOAD_DIR:-$HOME/storage/downloads}"); mkdir -p "$dir"; yt-dlp -P "$dir" "$url"; pause; }
+audio_downloader(){ header; record_usage "Audio Downloader"; need yt-dlp || { pause; return; }; local url dir; url=$(ask "URL"); dir=$(ask "Folder tujuan" "${DOWNLOAD_DIR:-$HOME/storage/downloads}"); mkdir -p "$dir"; yt-dlp -x --audio-format mp3 -P "$dir" "$url"; pause; }
+video_downloader(){ youtube_downloader; }
+image_compressor(){ header; record_usage "Image Compressor"; local in out q; in=$(ask "Input image"); out=$(ask "Output image" "compressed_$(basename "$in")"); q=$(ask "Quality" "75"); magick "$in" -strip -quality "$q" "$out"; ok "$out"; pause; }
+image_converter(){ header; record_usage "Image Converter"; local in out; in=$(ask "Input image"); out=$(ask "Output image (ext menentukan format)" "output.png"); magick "$in" "$out"; ok "$out"; pause; }
+watermark_image(){ header; record_usage "Watermark Image"; local in out text; in=$(ask "Input image"); out=$(ask "Output image" "watermarked_$(basename "$in")"); text=$(ask "Watermark text" "Android Master Toolkit"); magick "$in" -gravity southeast -pointsize 32 -fill white -undercolor '#00000080' -annotate +20+20 "$text" "$out"; ok "$out"; pause; }
